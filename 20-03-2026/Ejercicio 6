@@ -1,0 +1,84 @@
+package Ejercicio_6;
+
+// practica de sistema de reservas de sala de conferencias 
+import java.time.LocalDateTime;
+import java.util.*;
+import java.util.stream.Collectors;
+
+class Reserva {
+    private String usuario;
+    private LocalDateTime inicio;
+    private LocalDateTime fin;
+
+    public Reserva(String usuario, LocalDateTime inicio, LocalDateTime fin) {
+        this.usuario = usuario;
+        this.inicio = inicio;
+        this.fin = fin;
+    }
+
+    public LocalDateTime getInicio() { return inicio; }
+    public LocalDateTime getFin() { return fin; }
+    
+    @Override
+    public String toString() {
+        return "Reserva de " + usuario + " [" + inicio + " a " + fin + "]";
+    }
+}
+
+class Sala {
+    private String nombre;
+    private int capacidad;
+    private List<String> equipamiento;
+    private List<Reserva> calendario; // Cada sala tiene su propio historial 
+
+    public Sala(String nombre, int capacidad, List<String> equipamiento) {
+        this.nombre = nombre;
+        this.capacidad = capacidad;
+        this.equipamiento = equipamiento;
+        this.calendario = new ArrayList<>();
+    }
+
+    public String getNombre() { return nombre; }
+    public int getCapacidad() { return capacidad; }
+    public List<String> getEquipamiento() { return equipamiento; }
+
+
+    public boolean estaDisponible(LocalDateTime inicio, LocalDateTime fin) {
+        for (Reserva r : calendario) {
+            // Verifica si el nuevo horario choca con alguno existente
+            if (inicio.isBefore(r.getFin()) && fin.isAfter(r.getInicio())) {
+                return false; 
+            }
+        }
+        return true;
+    }
+
+    public void agregarReserva(Reserva r) {
+        calendario.add(r);
+    }
+}
+
+public class GestionReservas {
+    // Usamos Map para buscar salas rápidamente por su nombre 
+    private Map<String, Sala> salas = new HashMap<>();
+
+    public void registrarSala(Sala s) {
+        salas.put(s.getNombre(), s);
+    }
+
+    // Consultar salas que cumplen requisitos 
+    public List<Sala> buscarPorEquipamiento(String requisito) {
+        return salas.values().stream()
+                .filter(s -> s.getEquipamiento().contains(requisito))
+                .collect(Collectors.toList());
+    }
+
+    public boolean reservar(String nombreSala, Reserva nueva) {
+        Sala sala = salas.get(nombreSala);
+        if (sala != null && sala.estaDisponible(nueva.getInicio(), nueva.getFin())) {
+            sala.agregarReserva(nueva);
+            return true;
+        }
+        return false;
+    }
+}

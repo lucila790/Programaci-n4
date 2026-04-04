@@ -1,0 +1,96 @@
+package Ejercicio_9;
+
+//practica de sistema de vehiculos
+import java.util.*;
+
+//La clase Vehiculo debe ser abstracta y no se puede instanciar directamente 
+abstract class Vehiculo {
+    private String marca;
+    private String modelo;
+
+    public Vehiculo(String marca, String modelo) {
+        this.marca = marca;
+        this.modelo = modelo;
+    }
+
+    // Getters para compartir comportamiento común
+    public String getModelo() {
+        return modelo;
+    }
+
+    // 2. Método abstracto: cada subclase está obligada a implementarlo
+    public abstract double calcularConsumo();
+
+    protected abstract String getMarca();
+}
+
+// 3. Subclases que implementan la lógica específica
+class Auto extends Vehiculo {
+    public Auto(String marca, String modelo) {
+        super(marca, modelo);
+    }
+
+    @Override
+    public double calcularConsumo() {
+        return 8.5; // Consumo promedio para un Auto
+    }
+
+    @Override
+    protected String getMarca() {
+
+        throw new UnsupportedOperationException("Unimplemented method 'getMarca'");
+    }
+}
+
+class Moto extends Vehiculo {
+    public Moto(String marca, String modelo) {
+        super(marca, modelo);
+    }
+
+    @Override
+    public double calcularConsumo() {
+        return 3.2; // Consumo promedio para una Moto
+    }
+
+    @Override
+    protected String getMarca() {
+
+        throw new UnsupportedOperationException("Unimplemented method 'getMarca'");
+    }
+}
+
+class Camion extends Vehiculo {
+    public Camion(String marca, String modelo) {
+        super(marca, modelo);
+    }
+
+    @Override
+    public double calcularConsumo() {
+        return 35.0; // Consumo promedio para un Camión
+    }
+
+    @Override
+    protected String getMarca() {
+
+        throw new UnsupportedOperationException("Unimplemented method 'getMarca'");
+    }
+}
+
+// Clase Principal para ejecutar el sistema
+public class SistemaVehiculos {
+    public static void main(String[] args) {
+        // Creamos una lista de Vehiculos (Polimorfismo)
+        List<Vehiculo> flota = new ArrayList<>();
+
+        flota.add(new Auto("Toyota", "Corolla"));
+        flota.add(new Moto("Honda", "CB500"));
+        flota.add(new Camion("Scania", "R500"));
+
+        System.out.println("--- Reporte de Consumo de Combustible ---");
+        for (Vehiculo v : flota) {
+            System.out.println("Tipo: " + v.getClass().getSimpleName() +
+                    " | Marca: " + v.getMarca() +
+                    " | Consumo: " + v.calcularConsumo() + " L/100km");
+        }
+    }
+}

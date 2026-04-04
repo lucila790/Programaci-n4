@@ -1,0 +1,12 @@
+package Ejercicio_5;
+// practica de conectar amigos en plataforma de red social 
+import java.util.*;
+
+class Perfil {
+    private String username;
+    private Set<String> amigos = new HashSet<>(); // Unicidad en conexiones 
+
+    public String getUsername() { return username; }
+    
+    public void conectar(String amigo) { amigos.add(amigo); }
+}

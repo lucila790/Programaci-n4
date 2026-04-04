@@ -1,0 +1,40 @@
+package Ejercicio_8;
+
+// practica de usuario con id autogenerado
+public class UsuarioIdGener {
+    // El contador es compartido por todas las instancias y no se reinicia
+    private static int contadorId = 0; 
+    
+    private int id; // ID único para cada instancia
+    private String nombre;
+
+    public UsuarioIdGener(String nombre) {
+        this.nombre = nombre;
+        // Generación automática: se incrementa el estático y se asigna al atributo de instancia 
+        this.id = ++contadorId; 
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    // Método estático para informar el total de usuarios creados
+    public static int getCantidadUsuarios() {
+        return contadorId;
+    }
+
+    public static void main(String[] args) {
+        UsuarioIdGener u1 = new UsuarioIdGener("Facu");
+        UsuarioIdGener u2 = new UsuarioIdGener("Juan");
+
+        System.out.println("Usuario 1 - ID: " + u1.getId() + " Nombre: " + u1.getNombre());
+        System.out.println("Usuario 2 - ID: " + u2.getId() + " Nombre: " + u2.getNombre());
+        
+        // Consulta sin necesidad de instanciar un objeto nuevo 
+        System.out.println("Total de usuarios en el sistema: " + UsuarioIdGener.getCantidadUsuarios());
+    }
+}
